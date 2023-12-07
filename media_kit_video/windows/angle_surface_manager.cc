@@ -101,7 +101,11 @@ void ANGLESurfaceManager::Create() {
 void ANGLESurfaceManager::CleanUp(bool release_context) {
   if (release_context) {
     if (display_ != EGL_NO_DISPLAY && surface_ != EGL_NO_SURFACE) {
-      eglReleaseTexImage(display_, surface_, EGL_BACK_BUFFER);
+      try{
+        eglReleaseTexImage(display_, surface_, EGL_BACK_BUFFER);
+      }catch(exception e){
+        std::cout << "media_kit: ANGLESurfaceManager: eglReleaseTexImage: " << e.what() << std::endl;
+      }
     }
     if (display_ != EGL_NO_DISPLAY && context_ != EGL_NO_CONTEXT) {
       eglDestroyContext(display_, context_);
